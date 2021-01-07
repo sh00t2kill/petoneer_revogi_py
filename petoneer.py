@@ -20,18 +20,15 @@ class Petoneer:
 
     API_LOGIN_PATH          = "/user/101"
     API_DEVICE_LIST_PATH    = "/user/500"
-    API_DEVICE_DETAILS_PATH  = "/pww/31101"
-
-    POWER_STATES = {
-      "0": "Off",
-      "1": "On"
-    }
+    API_DEVICE_DETAILS_PATH = "/pww/31101"
+    Debug                   = 1 
 
     def __init__(self):
         # Nothing to do here
-        print("Petoneer Python API via the Dark Arts")
-        print("====================================")
-        print("")
+        if (self.Debug):
+            print("Petoneer Python API via the Dark Arts")
+            print("====================================")
+            print("")
 
     def _debug(self, msg):
         #print(msg)
@@ -62,8 +59,9 @@ class Petoneer:
           "username": username,
           "password": password
         }
-
-        print("Authenticating to " + self.API_URL + " as " + username + "...")
+        
+        if (self.Debug):
+            print("Authenticating to " + self.API_URL + " as " + username + "...")
 
         #
         # Attempt to authenticate - if successful, we will get an HTTP 200
@@ -76,12 +74,15 @@ class Petoneer:
         # Verify we have an auth token in the response - if so, store it
         if (json_resp['data']['accessToken']):
             self._auth_token = json_resp['data']['accessToken']
-            print("Authentication successful - token ***" + self._auth_token[-4:])
+            if (self.Debug):
+                print("Authentication successful - token ***" + self._auth_token[-4:])
         else:
             raise RuntimeError("No token value in response payload")
 
 
     def get_registered_devices(self):
+        if (self.Debug):
+            print("Getting All Devices")
         payload = {
           "dev": "all",
           "protocol": "3"
@@ -95,6 +96,8 @@ class Petoneer:
         return devices
 
     def get_device_details(self, device_code):
+        if (self.Debug):
+            print("Getting details for device " + device_code)
         payload = { "sn": device_code, "protocol": "3" }
         resp = self._req(self.API_DEVICE_DETAILS_PATH, payload)
         json_resp = resp.json()
