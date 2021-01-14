@@ -21,6 +21,7 @@ class Petoneer:
     API_LOGIN_PATH          = "/user/101"
     API_DEVICE_LIST_PATH    = "/user/500"
     API_DEVICE_DETAILS_PATH = "/pww/31101"
+    API_DEVICE_SWITCH_PATH  = "/pww/21101"
     Debug                   = 1 
 
     def __init__(self):
@@ -100,6 +101,22 @@ class Petoneer:
             print("Getting details for device " + device_code)
         payload = { "sn": device_code, "protocol": "3" }
         resp = self._req(self.API_DEVICE_DETAILS_PATH, payload)
+        json_resp = resp.json()
+
+        device_details = json_resp['data']
+        return device_details
+
+   def turn_on(self, device_code):
+        payload = { "sn": device_code, "protocol": "3", "switch": 1 }
+        resp = self._req(self.API_DEVICE_SWITCH_PATH, payload)
+        json_resp = resp.json()
+
+        device_details = json_resp['data']
+        return device_details
+
+    def turn_off(self, device_code):
+        payload = { "sn": device_code, "protocol": "3", "switch": 0 }
+        resp = self._req(self.API_DEVICE_SWITCH_PATH, payload)
         json_resp = resp.json()
 
         device_details = json_resp['data']
