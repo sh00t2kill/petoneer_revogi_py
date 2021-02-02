@@ -106,7 +106,7 @@ class Petoneer:
         device_details = json_resp['data']
         return device_details
 
-   def turn_on(self, device_code):
+    def turn_on(self, device_code):
         payload = { "sn": device_code, "protocol": "3", "switch": 1 }
         resp = self._req(self.API_DEVICE_SWITCH_PATH, payload)
         json_resp = resp.json()
